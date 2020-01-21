@@ -18,4 +18,10 @@ app.use(express.static(path.join(__dirname, 'dist')))
 const Authorization = require('./post/Authorization')
 app.post('/api/authorization', Authorization)
 
+const GetDate = require('./post/GetDate')
+app.post('/api/get/date', GetDate)
+
+const SetDate = require('./post/SetDate')
+app.post('/api/set/date', SetDate)
+
 app.listen(4300)
