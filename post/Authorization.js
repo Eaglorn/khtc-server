@@ -1,21 +1,21 @@
-const { Pool, Client } = require('pg')
-var conf = require('../conf/db')
+var User = require("../model/User");
 
-module.exports = async function (req, res) {
-    const pool = new Pool(conf.postgres)
-    pool.query('SELECT * FROM public.user WHERE login = $1', [req.body.login], (err, answer) => {
-        if (err) {
-          throw err
-        }
-        var login = false
-        var password = false
-        if (answer.rows.length != 0) {
-            login = true
-            if(req.body.password.trim() === answer.rows[0].password.trim()) {
-                password = true
-            }
-        }
-        res.send({ "login": login, "password": password })
-        pool.end()
-    })
-}
+module.exports = async function(req, res) {
+  User.findOne({
+    attributes: ['password'],
+    where: {
+      login: req.body.login
+    }
+  }).then(result => {
+    var login = false;
+    var password = false;
+    
+    if (result != null) {     
+      login = true;
+      if (req.body.password == result.password) {
+        password = true;
+      }
+    }
+    res.send({ login: login, password: password });
+  });
+};
