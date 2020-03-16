@@ -1,28 +1,28 @@
 const config = require("../config");
 const Sequelize = require("sequelize");
 
-class User extends Sequelize.Model {}
+class Event extends Sequelize.Model {}
 
-User.init(
+Event.init(
   {
     id: {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    login: {
+    title: {
       type: Sequelize.STRING
     },
-    password: {
+    text: {
       type: Sequelize.STRING
     },
-    name: {
+    date: {
       type: Sequelize.STRING
     },
-    surname: {
-      type: Sequelize.STRING
+    calendar_id: {
+      type: Sequelize.INTEGER
     }
   },
-  config("user")
+  config("event")
 );
 
-module.exports = User;
+module.exports = Event;

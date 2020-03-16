@@ -18,10 +18,7 @@ app.use(express.static(path.join(__dirname, "dist")));
 const Authorization = require("./post/Authorization");
 app.post("/api/authorization", Authorization);
 
-const GetDate = require("./post/Date").Set;
-app.post("/api/get/date", GetDate);
-
-const SetDate = require("./post/Date").Get;
-app.post("/api/set/date", SetDate);
+const GetUserCalendars = require("./post/Calendar").GetUserCalendars;
+app.post("/api/user/calendars", GetUserCalendars);
 
 app.listen(4000, "46.8.146.12");

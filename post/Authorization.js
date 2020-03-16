@@ -2,20 +2,19 @@ var User = require("../model/User");
 
 module.exports = async function(req, res) {
   User.findOne({
-    attributes: ['password'],
+    attributes: ["password"],
     where: {
       login: req.body.login
     }
-  }).then(result => {
-    var login = false;
-    var password = false;
-    
-    if (result != null) {     
-      login = true;
-      if (req.body.password == result.password) {
-        password = true;
+  }).then(user => {
+    if (user != null) {
+      if (req.body.password === user.password) {
+        res.send({ login: true, password: true });
+      } else {
+        res.send({ login: true, password: false });
       }
+    } else {
+      res.send({ login: false, password: false });
     }
-    res.send({ login: login, password: password });
   });
 };

@@ -1,28 +1,25 @@
 const config = require("../config");
 const Sequelize = require("sequelize");
 
-class User extends Sequelize.Model {}
+class Calendar extends Sequelize.Model {}
 
-User.init(
+Calendar.init(
   {
     id: {
       primaryKey: true,
       type: Sequelize.INTEGER
     },
-    login: {
+    title: {
       type: Sequelize.STRING
     },
-    password: {
+    text: {
       type: Sequelize.STRING
     },
-    name: {
-      type: Sequelize.STRING
-    },
-    surname: {
-      type: Sequelize.STRING
+    user_id: {
+      type: Sequelize.INTEGER
     }
   },
-  config("user")
+  config("calendar")
 );
 
-module.exports = User;
+module.exports = Calendar;
