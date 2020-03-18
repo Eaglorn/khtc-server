@@ -15,7 +15,7 @@ Calendar.init(
     text: {
       type: Sequelize.STRING
     },
-    user_id: {
+    owner: {
       type: Sequelize.INTEGER
     }
   },
