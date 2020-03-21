@@ -7,7 +7,8 @@ Event.init(
   {
     id: {
       primaryKey: true,
-      type: Sequelize.INTEGER
+      autoIncrement: true,
+      type: Sequelize.BIGINT
     },
     title: {
       type: Sequelize.STRING
@@ -18,8 +19,8 @@ Event.init(
     date: {
       type: Sequelize.STRING
     },
-    calendar_id: {
-      type: Sequelize.INTEGER
+    calendar: {
+      type: Sequelize.BIGINT
     }
   },
   config("event")

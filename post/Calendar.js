@@ -14,7 +14,7 @@ module.exports.GetUserCalendars = async function(req, res) {
         Calendar.findAll({
           attributes: ["id", "title", "text"],
           where: {
-            owner: user.id
+            user: user.id
           }
         }).then(calendars => {
           res.send({ success: true, calendars: calendars });
@@ -38,16 +38,16 @@ module.exports.GetUserCalendar = async function(req, res) {
     if (user != null) {
       if (req.body.password === user.password) {
         Calendar.findOne({
-          attributes: ["id", "title", "text", "owner"],
+          attributes: ["id", "title", "text", "user"],
           where: {
             id: req.body.id
           }
         }).then(calendar => {
-          if (calendar.owner === user.id) {
+          if (calendar.user === user.id) {
             Event.findAll({
-              attributes: ["id", "title", "text", "date", "calendar_id"],
+              attributes: ["id", "title", "text", "date", "calendar"],
               where: {
-                calendar_id: calendar.id
+                calendar: calendar.id
               }
             }).then(events => {
               res.send({ success: true, calendar: calendar, events: events });
@@ -55,6 +55,39 @@ module.exports.GetUserCalendar = async function(req, res) {
           } else {
             res.send({ success: false });
           }
+        });
+      } else {
+        res.send({ success: false });
+      }
+    } else {
+      res.send({ success: false });
+    }
+  });
+};
+
+module.exports.UserCreateCalendar = async function(req, res) {
+  User.findOne({
+    attributes: ["id", "password"],
+    where: {
+      login: req.body.login
+    }
+  }).then(user => {
+    if (user != null) {
+      if (req.body.password === user.password) {
+        Calendar.create({
+          title: "Ваш новый календарь",
+          text: "Пользуйтесь с пользой!",
+          user: user.id
+        }).then(calendar => {
+          Event.create({
+            title: "Создание календаря",
+            text: "В этот день создан данный календарь",
+            date: "2020/03/30",
+            calendar: calendar.id
+          }).then(event => {
+            var events = [event];
+            res.send({ success: true, calendar: calendar, events: events });
+          });
         });
       } else {
         res.send({ success: false });

@@ -7,6 +7,7 @@ User.init(
   {
     id: {
       primaryKey: true,
+      autoIncrement: true,
       type: Sequelize.INTEGER
     },
     login: {

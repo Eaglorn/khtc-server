@@ -33,6 +33,9 @@ app.post("/api/user/calendars", GetUserCalendars);
 const GetUserCalendar = require("./post/Calendar").GetUserCalendar;
 app.post("/api/user/calendar", GetUserCalendar);
 
+const UserCreateCalendar = require("./post/Calendar").UserCreateCalendar;
+app.post("/api/user/calendar/create", UserCreateCalendar);
+
 io.on('connection', function(socket){
   socket.on('calendar', function(login, password, id){
     socket.broadcast.to("calendar-" + id).emit('calendar', calendar);

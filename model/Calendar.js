@@ -7,7 +7,8 @@ Calendar.init(
   {
     id: {
       primaryKey: true,
-      type: Sequelize.INTEGER
+      autoIncrement: true,
+      type: Sequelize.BIGINT
     },
     title: {
       type: Sequelize.STRING
@@ -15,8 +16,8 @@ Calendar.init(
     text: {
       type: Sequelize.STRING
     },
-    owner: {
-      type: Sequelize.INTEGER
+    user: {
+      type: Sequelize.BIGINT
     }
   },
   config("calendar")
