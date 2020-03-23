@@ -27,14 +27,17 @@ app.use(express.static(path.join(__dirname, "dist")));
 const Authorization = require("./post/Authorization");
 app.post("/api/authorization", Authorization);
 
-const GetUserCalendars = require("./post/Calendar").GetUserCalendars;
-app.post("/api/user/calendars", GetUserCalendars);
+const UserCalendars = require("./post/Calendar").UserCalendars;
+app.post("/api/user/calendars", UserCalendars);
 
-const GetUserCalendar = require("./post/Calendar").GetUserCalendar;
-app.post("/api/user/calendar", GetUserCalendar);
+const UserCalendar = require("./post/Calendar").UserCalendar;
+app.post("/api/user/calendar", UserCalendar);
 
-const UserCreateCalendar = require("./post/Calendar").UserCreateCalendar;
-app.post("/api/user/calendar/create", UserCreateCalendar);
+const UserCalendarCreate = require("./post/Calendar").UserCalendarCreate;
+app.post("/api/user/calendar/create", UserCalendarCreate);
+
+const UserCalendarDelete = require("./post/Calendar").UserCalendarDelete;
+app.post("/api/user/calendar/delete", UserCalendarDelete);
 
 io.on('connection', function(socket){
   socket.on('calendar', function(login, password, id){

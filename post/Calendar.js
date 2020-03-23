@@ -2,7 +2,7 @@ var User = require("../model/User");
 var Calendar = require("../model/Calendar");
 var Event = require("../model/Event");
 
-module.exports.GetUserCalendars = async function(req, res) {
+module.exports.UserCalendars = async function(req, res) {
   User.findOne({
     attributes: ["id", "password"],
     where: {
@@ -28,7 +28,7 @@ module.exports.GetUserCalendars = async function(req, res) {
   });
 };
 
-module.exports.GetUserCalendar = async function(req, res) {
+module.exports.UserCalendar = async function(req, res) {
   User.findOne({
     attributes: ["id", "password"],
     where: {
@@ -65,7 +65,7 @@ module.exports.GetUserCalendar = async function(req, res) {
   });
 };
 
-module.exports.UserCreateCalendar = async function(req, res) {
+module.exports.UserCalendarCreate = async function(req, res) {
   User.findOne({
     attributes: ["id", "password"],
     where: {
@@ -88,6 +88,45 @@ module.exports.UserCreateCalendar = async function(req, res) {
             var events = [event];
             res.send({ success: true, calendar: calendar, events: events });
           });
+        });
+      } else {
+        res.send({ success: false });
+      }
+    } else {
+      res.send({ success: false });
+    }
+  });
+};
+
+module.exports.UserCalendarDelete = async function(req, res) {
+  User.findOne({
+    attributes: ["id", "password"],
+    where: {
+      login: req.body.login
+    }
+  }).then(user => {
+    if (user != null) {
+      if (req.body.password === user.password) {
+        Calendar.findOne({
+          attributes: ["id", "user"],
+          where: {
+            id: req.body.id
+          }
+        }).then(calendar => {
+          if (calendar.user === user.id) {
+            calendar.destroy().then(calendar => {
+              Calendar.findAll({
+                attributes: ["id", "title", "text"],
+                where: {
+                  user: user.id
+                }
+              }).then(calendars => {
+                res.send({ success: true, calendars: calendars });
+              });
+            });
+          } else {
+            res.send({ success: false });
+          }
         });
       } else {
         res.send({ success: false });
