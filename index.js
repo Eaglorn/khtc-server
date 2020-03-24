@@ -24,6 +24,12 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "dist")));
 
+/*
+app.use(express.urlencoded({ limit: "1kb" }));
+app.use(express.json({ limit: "1kb" }));
+app.use(express.multipart({ limit:"10mb" }));
+*/
+
 const Authorization = require("./post/Authorization");
 app.post("/api/authorization", Authorization);
 
