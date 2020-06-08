@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./index.js"
+    "start": "nodemon ./index.js",
+    "socket": "nodemon ./socket.js"
   },
   "dependencies": {
     "async": "3.2.0",

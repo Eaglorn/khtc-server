@@ -5,13 +5,16 @@ var path = require("path");
 var app = express();
 var http = require("http").createServer(app);
 var io = require("socket.io")(http, {
-  path: '/test',
+  path: '/',
   serveClient: false,
   pingInterval: 10000,
   pingTimeout: 5000,
   upgradeTimeout: 5000,
-  cookie: false
+  cookie: false,
+  origins: '*:*'
 });
+
+io.attach(http);
 
 var corsOptions = {
   origin: "*",
@@ -30,6 +33,7 @@ app.use(express.json({ limit: "1kb" }));
 app.use(express.multipart({ limit:"10mb" }));
 */
 
+
 const Authorization = require("./post/Authorization");
 app.post("/api/authorization", Authorization);
 
@@ -45,10 +49,18 @@ app.post("/api/user/calendar/create", UserCalendarCreate);
 const UserCalendarDelete = require("./post/Calendar").UserCalendarDelete;
 app.post("/api/user/calendar/delete", UserCalendarDelete);
 
-io.on('connection', function(socket){
+/*io.on('connection', function(socket){
   socket.on('calendar', function(login, password, id){
     socket.broadcast.to("calendar-" + id).emit('calendar', calendar);
   });
+});*/
+
+io.on('connection', function(socket){
+  console.log(socket.id);
+  socket.on('SEND_NUMB', function(data){
+    console.log(data);
+    socket.broadcast.emit('NUMB', data);
+  });
 });
 
-http.listen(4000, "46.8.146.12");
+http.listen(4000);
