@@ -31,4 +31,6 @@ app.post("/api/user/calendar/create", UserCalendarCreate);
 const UserCalendarDelete = require("./post/Calendar").UserCalendarDelete;
 app.post("/api/user/calendar/delete", UserCalendarDelete);
 
+app.get('/', (req, res) => { res.sendFile(path.join(__dirname, 'dist/index.html')) })
+
 http.listen(4000);
