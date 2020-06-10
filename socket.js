@@ -24,9 +24,9 @@ var peoples = 0;
 
 io.on("connection", function (socket) {
   peoples++;
-  socket.on("UPDATE_PEOPLES", function () {
-    socket.broadcast.emit("UPDATE_PEOPLES", peoples);
-  });
+
+  socket.emit("UPDATE_PEOPLES", peoples);
+  socket.broadcast.emit("UPDATE_PEOPLES", peoples);
 
   socket.on("disconnect", function () {
     peoples--;
