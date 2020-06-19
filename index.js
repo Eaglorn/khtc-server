@@ -28,6 +28,9 @@ app.post("/api/user/calendar", UserCalendar);
 const UserCalendarCreate = require("./post/Calendar").UserCalendarCreate;
 app.post("/api/user/calendar/create", UserCalendarCreate);
 
+const UserCalendarEdit = require("./post/Calendar").UserCalendarEdit;
+app.post("/api/user/calendar/edit", UserCalendarEdit);
+
 const UserCalendarDelete = require("./post/Calendar").UserCalendarDelete;
 app.post("/api/user/calendar/delete", UserCalendarDelete);
 

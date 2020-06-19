@@ -139,3 +139,35 @@ module.exports.UserCalendarDelete = async function(req, res) {
     }
   });
 };
+
+module.exports.UserCalendarEdit = async function(req, res) {
+  User.findOne({
+    attributes: ["id", "password"],
+    where: {
+      login: req.body.login
+    }
+  }).then(user => {
+    if (user != null) {
+      if (req.body.password === user.password) {
+        Calendar.findOne({
+          attributes: ["id", "user"],
+          where: {
+            id: req.body.id
+          }
+        }).then(calendar => {
+          if (calendar.user === user.id) {
+            calendar.update({ title: req.body.title, text: req.body.text}, {fields: ['title', 'text']}).then(() => {
+              res.send({ success: true});
+            });
+          } else {
+            res.send({ success: false });
+          }
+        });
+      } else {
+        res.send({ success: false });
+      }
+    } else {
+      res.send({ success: false });
+    }
+  });
+};
