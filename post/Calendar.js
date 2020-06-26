@@ -157,7 +157,14 @@ module.exports.UserCalendarEdit = async function(req, res) {
         }).then(calendar => {
           if (calendar.user === user.id) {
             calendar.update({ title: req.body.title, text: req.body.text}, {fields: ['title', 'text']}).then(() => {
-              res.send({ success: true});
+              Calendar.findAll({
+                attributes: ["id", "title", "text"],
+                where: {
+                  user: user.id
+                }
+              }).then(calendars => {
+                res.send({ success: true, calendars: calendars });
+              });
             });
           } else {
             res.send({ success: false });
