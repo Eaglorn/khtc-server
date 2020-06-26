@@ -1,5 +1,4 @@
 var moment = require('moment');
-moment().format();
 
 var User = require("../model/User");
 var Calendar = require("../model/Calendar");
@@ -82,10 +81,11 @@ module.exports.UserCalendarCreate = async function(req, res) {
           text: "Пользуйтесь с пользой!",
           user: user.id
         }).then(calendar => {
+          console.log(moment(moment.now()).format());
           Event.create({
             title: "Создание календаря",
             text: "В этот день создан данный календарь",
-            date: moment(moment.now()).format("YYYY/MM/DD"),
+            date: moment(moment.now()).format(),//.format("YYYY/MM/DD"),
             calendar: calendar.id
           }).then(event => {
             var events = [event];

@@ -1,3 +1,5 @@
+var moment = require('moment');
+
 const config = require("../config");
 const Sequelize = require("sequelize");
 
@@ -17,7 +19,10 @@ Event.init(
       type: Sequelize.STRING
     },
     date: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
+      get() {
+        return moment(this.getDataValue('date')).format("YYYY/MM/DD");
+      },
     },
     calendar: {
       type: Sequelize.BIGINT
