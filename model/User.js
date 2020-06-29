@@ -8,20 +8,20 @@ User.init(
     id: {
       primaryKey: true,
       autoIncrement: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.INTEGER,
     },
     login: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     password: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     name: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     surname: {
-      type: Sequelize.STRING
-    }
+      type: Sequelize.STRING,
+    },
   },
   config("user")
 );

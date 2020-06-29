@@ -8,17 +8,17 @@ Calendar.init(
     id: {
       primaryKey: true,
       autoIncrement: true,
-      type: Sequelize.BIGINT
+      type: Sequelize.BIGINT,
     },
     title: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     text: {
-      type: Sequelize.STRING
+      type: Sequelize.STRING,
     },
     user: {
-      type: Sequelize.BIGINT
-    }
+      type: Sequelize.BIGINT,
+    },
   },
   config("calendar")
 );
