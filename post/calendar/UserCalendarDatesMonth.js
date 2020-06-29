@@ -1,5 +1,6 @@
 var moment = require("moment");
 var Op = require("sequelize").Op;
+var Sequelize = require("sequelize");
 
 var User = require("../../model/User");
 var Calendar = require("../../model/Calendar");
@@ -22,8 +23,9 @@ module.exports = async function (req, res) {
         }).then((calendar) => {
           if (calendar.user === user.id) {
             Event.findAll({
-              attributes: ["date"],
-              distinct: "date",
+              attributes: [
+                [Sequelize.fn("DISTINCT", Sequelize.col("date")), "date"],
+              ],
               where: {
                 calendar: calendar.id,
                 date: {
