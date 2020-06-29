@@ -1,4 +1,5 @@
 var moment = require('moment');
+var Op = require("sequelize").Op;
 
 var User = require("../model/User");
 var Calendar = require("../model/Calendar");
@@ -49,10 +50,16 @@ module.exports.UserCalendar = async function(req, res) {
             Event.findAll({
               attributes: ["id", "title", "text", "date", "calendar"],
               where: {
-                calendar: calendar.id
+                calendar: calendar.id,
+                date: {
+                  [Op.gt]: moment().startOf('day').format(),
+                  [Op.lt]: moment().endOf('day').format()
+                }
               }
             }).then(events => {
               res.send({ success: true, calendar: calendar, events: events });
+            }).catch(e => {
+              console.log(e);
             });
           } else {
             res.send({ success: false });
@@ -81,7 +88,6 @@ module.exports.UserCalendarCreate = async function(req, res) {
           text: req.body.text,
           user: user.id
         }).then(calendar => {
-          console.log(moment(moment.now()).format());
           Event.create({
             title: "Создание календаря",
             text: "В этот день создан данный календарь",
