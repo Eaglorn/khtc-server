@@ -85,7 +85,7 @@ module.exports.UserCalendarCreate = async function(req, res) {
           Event.create({
             title: "Создание календаря",
             text: "В этот день создан данный календарь",
-            date: moment(moment.now()).format(),//.format("YYYY/MM/DD"),
+            date: moment(moment.now()).format(),
             calendar: calendar.id
           }).then(event => {
             var events = [event];
