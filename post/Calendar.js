@@ -77,8 +77,8 @@ module.exports.UserCalendarCreate = async function(req, res) {
     if (user != null) {
       if (req.body.password === user.password) {
         Calendar.create({
-          title: "Ваш новый календарь",
-          text: "Пользуйтесь с пользой!",
+          title: req.body.title,
+          text: req.body.text,
           user: user.id
         }).then(calendar => {
           console.log(moment(moment.now()).format());
