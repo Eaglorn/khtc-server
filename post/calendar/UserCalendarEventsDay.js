@@ -4,6 +4,7 @@ var Op = Sequelize.Op;
 
 var User = require("../../model/User");
 var Calendar = require("../../model/Calendar");
+var Event = require("../../model/Event");
 
 module.exports = async function (req, res) {
   User.findOne({
@@ -21,15 +22,29 @@ module.exports = async function (req, res) {
           },
         }).then((calendar) => {
           if (calendar.user === user.id) {
-            calendar.destroy().then((calendar) => {
-              Calendar.findAll({
-                attributes: ["id", "title", "text"],
-                where: {
-                  user: user.id,
+            Event.findAll({
+              attributes: ["id", "date", "title"],
+              where: {
+                calendar: calendar.id,
+                date: {
+                  [Op.gt]: moment({
+                    month: req.body.month,
+                    year: req.body.year,
+                    day: req.body.day,
+                  })
+                    .startOf("day")
+                    .format(),
+                  [Op.lt]: moment({
+                    month: req.body.month,
+                    year: req.body.year,
+                    day: req.body.day,
+                  })
+                    .endOf("day")
+                    .format(),
                 },
-              }).then((calendars) => {
-                res.send({ success: true, calendars: calendars });
-              });
+              },
+            }).then((events) => {
+              res.send({ success: true, events: events });
             });
           } else {
             res.send({ success: false });

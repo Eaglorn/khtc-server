@@ -34,8 +34,11 @@ app.post("/api/user/calendar/edit", UserCalendarEdit);
 const UserCalendarDelete = require("./post/calendar/UserCalendarDelete");
 app.post("/api/user/calendar/delete", UserCalendarDelete);
 
-const UserCalendarEventsMonth = require("./post/calendar/UserCalendarDatesMonth");
-app.post("/api/user/calendar/dates_month", UserCalendarEventsMonth);
+const UserCalendarDatesMonth = require("./post/calendar/UserCalendarDatesMonth");
+app.post("/api/user/calendar/dates_month", UserCalendarDatesMonth);
+
+const UserCalendarEventsDay = require("./post/calendar/UserCalendarEventsDay");
+app.post("/api/user/calendar/events_day", UserCalendarEventsDay);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "dist/index.html"));

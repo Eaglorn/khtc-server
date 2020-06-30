@@ -1,5 +1,6 @@
 var moment = require("moment");
-var Op = require("sequelize").Op;
+var Sequelize = require("sequelize");
+var Op = Sequelize.Op;
 
 var User = require("../../model/User");
 var Calendar = require("../../model/Calendar");
@@ -22,7 +23,9 @@ module.exports = async function (req, res) {
         }).then((calendar) => {
           if (calendar.user === user.id) {
             Event.findAll({
-              attributes: ["id", "title", "text", "date", "calendar"],
+              attributes: [
+                [Sequelize.fn("DISTINCT", Sequelize.col("date")), "date"],
+              ],
               where: {
                 calendar: calendar.id,
                 date: {
@@ -30,8 +33,24 @@ module.exports = async function (req, res) {
                   [Op.lt]: moment().endOf("month").format(),
                 },
               },
-            }).then((events) => {
-              res.send({ success: true, calendar: calendar, events: events });
+            }).then((dates) => {
+              Event.findAll({
+                attributes: ["id", "title", "text", "date", "calendar"],
+                where: {
+                  calendar: calendar.id,
+                  date: {
+                    [Op.gt]: moment().startOf("day").format(),
+                    [Op.lt]: moment().endOf("day").format(),
+                  },
+                },
+              }).then((events) => {
+                res.send({
+                  success: true,
+                  calendar: calendar,
+                  dates: dates,
+                  events: events,
+                });
+              });
             });
           } else {
             res.send({ success: false });
