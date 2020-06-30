@@ -6,15 +6,19 @@ module.exports = async function (req, res) {
     where: {
       login: req.body.login,
     },
-  }).then((user) => {
-    if (user != null) {
-      if (req.body.password === user.password) {
-        res.send({ login: true, password: true });
+  })
+    .then((user) => {
+      if (user != null) {
+        if (req.body.password === user.password) {
+          res.send({ login: true, password: true });
+        } else {
+          res.send({ login: true, password: false });
+        }
       } else {
-        res.send({ login: true, password: false });
+        res.send({ login: false, password: false });
       }
-    } else {
-      res.send({ login: false, password: false });
-    }
-  });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
 };

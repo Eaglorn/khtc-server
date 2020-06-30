@@ -2,65 +2,50 @@ var moment = require("moment");
 var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
-var User = require("../../model/User");
 var Calendar = require("../../model/Calendar");
 var Event = require("../../model/Event");
 
 module.exports = async function (req, res) {
-  User.findOne({
-    attributes: ["id", "password"],
+  Calendar.findOne({
+    attributes: ["id", "title", "text"],
     where: {
-      login: req.body.login,
+      id: req.body.id,
     },
-  }).then((user) => {
-    if (user != null) {
-      if (req.body.password === user.password) {
-        Calendar.findOne({
-          attributes: ["id", "title", "text", "user"],
-          where: {
-            id: req.body.id,
+  })
+    .then((calendar) => {
+      Event.findAll({
+        attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("date")), "date"]],
+        where: {
+          calendar: calendar.id,
+          date: {
+            [Op.gt]: moment().startOf("month").format(),
+            [Op.lt]: moment().endOf("month").format(),
           },
-        }).then((calendar) => {
-          if (calendar.user === user.id) {
-            Event.findAll({
-              attributes: [
-                [Sequelize.fn("DISTINCT", Sequelize.col("date")), "date"],
-              ],
-              where: {
-                calendar: calendar.id,
-                date: {
-                  [Op.gt]: moment().startOf("month").format(),
-                  [Op.lt]: moment().endOf("month").format(),
-                },
+        },
+      })
+        .then((dates) => {
+          Event.findAll({
+            attributes: ["id", "title", "text", "date", "calendar"],
+            where: {
+              calendar: calendar.id,
+              date: {
+                [Op.gt]: moment().startOf("day").format(),
+                [Op.lt]: moment().endOf("day").format(),
               },
-            }).then((dates) => {
-              Event.findAll({
-                attributes: ["id", "title", "text", "date", "calendar"],
-                where: {
-                  calendar: calendar.id,
-                  date: {
-                    [Op.gt]: moment().startOf("day").format(),
-                    [Op.lt]: moment().endOf("day").format(),
-                  },
-                },
-              }).then((events) => {
-                res.send({
-                  success: true,
-                  calendar: calendar,
-                  dates: dates,
-                  events: events,
-                });
-              });
+            },
+          })
+            .then((events) => {
+              res.send({ calendar: calendar, dates: dates, events: events });
+            })
+            .catch(function (err) {
+              console.log(err);
             });
-          } else {
-            res.send({ success: false });
-          }
+        })
+        .catch(function (err) {
+          console.log(err);
         });
-      } else {
-        res.send({ success: false });
-      }
-    } else {
-      res.send({ success: false });
-    }
-  });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
 };

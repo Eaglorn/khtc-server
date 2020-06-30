@@ -7,26 +7,26 @@ var Calendar = require("../../model/Calendar");
 
 module.exports = async function (req, res) {
   User.findOne({
-    attributes: ["id", "password"],
+    attributes: ["id"],
     where: {
       login: req.body.login,
     },
-  }).then((user) => {
-    if (user != null) {
-      if (req.body.password === user.password) {
-        Calendar.findAll({
-          attributes: ["id", "title", "text"],
-          where: {
-            user: user.id,
-          },
-        }).then((calendars) => {
-          res.send({ success: true, calendars: calendars });
+  })
+    .then((user) => {
+      Calendar.findAll({
+        attributes: ["id", "title", "text"],
+        where: {
+          user: user.id,
+        },
+      })
+        .then((calendars) => {
+          res.send({ calendars: calendars });
+        })
+        .catch(function (err) {
+          console.log(err);
         });
-      } else {
-        res.send({ success: false });
-      }
-    } else {
-      res.send({ success: false });
-    }
-  });
+    })
+    .catch(function (err) {
+      console.log(err);
+    });
 };
