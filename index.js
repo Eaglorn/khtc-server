@@ -16,32 +16,35 @@ app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "dist")));
 
-const Authorization = require("./post/authorization/Authorization");
-app.post("/api/authorization", Authorization);
+// User
+const UserAuthorization = require("./post/user/Authorization");
+app.post("/api/user/authorization", UserAuthorization);
 
-const UserCalendars = require("./post/calendar/UserCalendars");
+// Calendar
+const UserCalendars = require("./post/calendar/Calendars");
 app.post("/api/user/calendars", UserCalendars);
 
-const UserCalendar = require("./post/calendar/UserCalendar");
+const UserCalendar = require("./post/calendar/Calendar");
 app.post("/api/user/calendar", UserCalendar);
 
-const UserCalendarCreate = require("./post/calendar/UserCalendarCreate");
+const UserCalendarCreate = require("./post/calendar/Create");
 app.post("/api/user/calendar/create", UserCalendarCreate);
 
-const UserCalendarEdit = require("./post/calendar/UserCalendarEdit");
+const UserCalendarEdit = require("./post/calendar/Edit");
 app.post("/api/user/calendar/edit", UserCalendarEdit);
 
-const UserCalendarDelete = require("./post/calendar/UserCalendarDelete");
+const UserCalendarDelete = require("./post/calendar/Delete");
 app.post("/api/user/calendar/delete", UserCalendarDelete);
 
-const UserCalendarDatesMonth = require("./post/calendar/UserCalendarDatesMonth");
-app.post("/api/user/calendar/dates/month", UserCalendarDatesMonth);
+// Event
+const UserEventDatesMonth = require("./post/event/DatesMonth");
+app.post("/api/user/calendar/dates/month", UserEventDatesMonth);
 
-const UserCalendarEventsDay = require("./post/calendar/UserCalendarEventsDay");
-app.post("/api/user/calendar/events/day", UserCalendarEventsDay);
+const UserEventsDay = require("./post/event/EventsDay");
+app.post("/api/user/calendar/events/day", UserEventsDay);
 
-const UserCalendarEventDelete = require("./post/calendar/UserCalendarEventDelete");
-app.post("/api/user/calendar/event/delete", UserCalendarEventDelete);
+const UserEventDelete = require("./post/event/Delete");
+app.post("/api/user/calendar/event/delete", UserEventDelete);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "dist/index.html"));
