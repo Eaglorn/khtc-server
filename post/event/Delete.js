@@ -6,13 +6,28 @@ var Event = require("../../model/Event");
 
 module.exports = async function (req, res) {
   Event.findOne({
+    attributes: ["id", "calendar"],
     where: {
       id: req.body.id,
     },
   })
     .then((event) => {
-      event.destroy().then((event) => {
-        res.send({});
+      event.destroy().then((event_delete) => {
+        Event.findAll({
+          attributes: [[Sequelize.fn("DISTINCT", Sequelize.col("date")), "date"]],
+          where: {
+            calendar: event.calendar,
+            date: {
+              [Op.gt]: moment().startOf("month").format(),
+              [Op.lt]: moment().endOf("month").format(),
+            },
+          },
+        }).then((events) => {
+          res.send({ events: events });
+        })
+          .catch(function (err) {
+            console.log(err);
+          });
       });
     })
     .catch(function (err) {
