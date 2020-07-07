@@ -22,8 +22,8 @@ module.exports = async function (req, res) {
               [Op.lt]: moment().endOf("month").format(),
             },
           },
-        }).then((events) => {
-          res.send({ events: events });
+        }).then((dates) => {
+          res.send({ dates: dates });
         })
           .catch(function (err) {
             console.log(err);

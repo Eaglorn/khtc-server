@@ -46,6 +46,9 @@ app.post("/api/user/calendar/events/day", UserEventsDay);
 const UserEventDelete = require("./post/event/Delete");
 app.post("/api/user/calendar/event/delete", UserEventDelete);
 
+const UserEventCreate = require("./post/event/Create");
+app.post("/api/user/calendar/event/create", UserEventCreate);
+
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "dist/index.html"));
 });

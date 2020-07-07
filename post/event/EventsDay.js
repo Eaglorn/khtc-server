@@ -2,7 +2,6 @@ var moment = require("moment");
 var Sequelize = require("sequelize");
 var Op = Sequelize.Op;
 
-var User = require("../../model/User");
 var Calendar = require("../../model/Calendar");
 var Event = require("../../model/Event");
 
