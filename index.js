@@ -4,6 +4,7 @@ var bodyParser = require("body-parser");
 var path = require("path");
 var app = express();
 var http = require("http").createServer(app);
+const fileUpload = require('express-fileupload');
 
 var corsOptions = {
   origin: "*",
@@ -15,6 +16,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use(express.static(path.join(__dirname, "dist")));
+
+app.use(fileUpload());
 
 // User
 const UserAuthorization = require("./post/user/Authorization");
@@ -48,6 +51,9 @@ app.post("/api/user/calendar/event/delete", UserEventDelete);
 
 const UserEventCreate = require("./post/event/Create");
 app.post("/api/user/calendar/event/create", UserEventCreate);
+
+const TxtTable = require("./post/TxtTable");
+app.post("/api/txt/table/", TxtTable);
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "dist/index.html"));
